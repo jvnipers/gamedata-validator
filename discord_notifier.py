@@ -95,7 +95,8 @@ def notify_vfunc_results(vfunc_results, signature):
         win_result = windows_results.get(class_name)
         lin_result = linux_results.get(class_name)
 
-        binary = (win_result or lin_result).get('binary', 'Unknown')
+        result = win_result or lin_result
+        binary = result.get('binary', 'Unknown') if result else 'Unknown'
 
         if binary not in binary_groups:
             binary_groups[binary] = []
@@ -139,6 +140,18 @@ def notify_vfunc_results(vfunc_results, signature):
                 "inline": False
             })
 
+    windows_failed = total_classes - windows_success
+    linux_failed = total_classes - linux_success
+    total_failed = windows_failed + linux_failed
+    total_checks = total_classes * 2
+
+    if total_failed == 0:
+        color = 3066993
+    elif total_failed < total_checks / 2:
+        color = 16776960
+    else:
+        color = 15158332
+
     import json as json_lib
     files_to_upload = [
         {
@@ -155,7 +168,7 @@ def notify_vfunc_results(vfunc_results, signature):
         title="VFunc Offsets - Windows & Linux",
         description=f"Virtual function offset analysis completed for both platforms",
         fields=fields,
-        color=3066993,
+        color=color,
         files=files_to_upload
     )
 
