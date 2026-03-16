@@ -161,10 +161,12 @@ def notify_vfunc_results(vfunc_results, signature):
 
 
 def notify_pattern_scan_results(scan_results, signature):
-    def get_circle(count):
+    def get_circle(count, allow_multi_match=False):
         if count == 0:
             return "🔴"
         elif count == 1:
+            return "🟢"
+        elif allow_multi_match:
             return "🟢"
         else:
             return "🟡"
@@ -174,9 +176,13 @@ def notify_pattern_scan_results(scan_results, signature):
 
     all_signatures = set(windows_results.keys()) | set(linux_results.keys())
 
+    def is_success(r):
+        count = r.get('count', 0)
+        return count == 1 or (count > 1 and r.get('allow_multi_match', False))
+
     total_signatures = len(all_signatures)
-    windows_success = sum(1 for r in windows_results.values() if r.get('count', 0) > 0)
-    linux_success = sum(1 for r in linux_results.values() if r.get('count', 0) > 0)
+    windows_success = sum(1 for r in windows_results.values() if is_success(r))
+    linux_success = sum(1 for r in linux_results.values() if is_success(r))
     windows_failed = len(windows_results) - windows_success
     linux_failed = len(linux_results) - linux_success
 
@@ -211,8 +217,11 @@ def notify_pattern_scan_results(scan_results, signature):
         win_count = win_result['count'] if win_result else 0
         lin_count = lin_result['count'] if lin_result else 0
 
-        win_circle = get_circle(win_count)
-        lin_circle = get_circle(lin_count)
+        win_multi = win_result.get('allow_multi_match', False) if win_result else False
+        lin_multi = lin_result.get('allow_multi_match', False) if lin_result else False
+
+        win_circle = get_circle(win_count, win_multi)
+        lin_circle = get_circle(lin_count, lin_multi)
 
         results_lines.append(
             f"`{sig_name}` → Windows `[{win_count}]` {win_circle}, Linux `[{lin_count}]` {lin_circle}"
