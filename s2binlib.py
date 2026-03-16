@@ -1,6 +1,7 @@
 import ctypes as C
-from ctypes import *
+from ctypes import CFUNCTYPE, c_bool, c_size_t, c_void_p
 import platform
+from typing import Optional
 
 PatternScanCallback = CFUNCTYPE(
     c_bool,
@@ -9,7 +10,7 @@ PatternScanCallback = CFUNCTYPE(
     c_void_p
 )
 
-dll = None
+dll: Optional[C.CDLL] = None
 
 def initialize(game_path, game_name, os):
     global dll
@@ -19,6 +20,7 @@ def initialize(game_path, game_name, os):
         raise Exception(f"Failed to initialize, error code {ret}")
 
 def find_vtable_va(class_binary_name, class_name):
+    assert dll is not None, "s2binlib not initialized"
     buffer = C.c_uint64(0)
     ret = dll.s2binlib_find_vtable_va(class_binary_name.encode(), class_name.encode(), C.byref(buffer))
     if ret != 0:
@@ -26,6 +28,7 @@ def find_vtable_va(class_binary_name, class_name):
     return buffer.value
 
 def get_vfunc_count(class_binary_name, class_name):
+    assert dll is not None, "s2binlib not initialized"
     buffer = C.c_uint64(0)
     ret = dll.s2binlib_get_vtable_vfunc_count(class_binary_name.encode(), class_name.encode(), C.byref(buffer))
     if ret != 0:
@@ -44,6 +47,7 @@ def pattern_scan(class_binary_name, pattern):
         match = address
         return False
     cb = PatternScanCallback(callback)
+    assert dll is not None, "s2binlib not initialized"
     ret = dll.s2binlib_pattern_scan_all_va(class_binary_name.encode(), pattern.encode(), cb, 0)
     if ret != 0 and ret != -4:
         raise Exception(f"Failed to find pattern, error code {ret}")
