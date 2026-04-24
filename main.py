@@ -14,7 +14,7 @@ from pathlib import Path
 from os import makedirs
 from dotenv import load_dotenv
 from steamchecker import CheckGameUpdates, GetSignature
-from discord_notifier import notify_vfunc_results, notify_pattern_scan_results, notify_offset_results
+from discord_notifier import notify_vfunc_results, notify_pattern_scan_results
 
 sys.path.insert(0, str(Path(__file__).parent))
 from convert_kv_to_jsonc import convert as convert_gamedata
