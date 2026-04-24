@@ -1,9 +1,9 @@
 services:
   validator:
-    build: .
+    image: gamedata-validator
     env_file: .env
     restart: unless-stopped
-    user: 1000:1000
+    user: 1012:1012
     stdin_open: true
     tty: true
     volumes:
