@@ -41,6 +41,7 @@ def load_webhook_configs():
                 'notify_vfunc': os.getenv(f'{prefix}_NOTIFY_VFUNC', '1') == '1',
                 'notify_patterns': os.getenv(f'{prefix}_NOTIFY_PATTERNS', '1') == '1',
                 'attach_json': os.getenv(f'{prefix}_ATTACH_JSON', '1') == '1',
+                'patterns_only_on_failure': os.getenv(f'{prefix}_PATTERNS_ONLY_ON_FAILURE', '0') == '1',
             })
     else:
         url = os.getenv('DISCORD_WEBHOOK', '')
@@ -51,6 +52,7 @@ def load_webhook_configs():
                 'notify_vfunc': os.getenv('NOTIFY_VFUNC', '1') == '1',
                 'notify_patterns': os.getenv('NOTIFY_PATTERNS', '1') == '1',
                 'attach_json': os.getenv('WEBHOOK_ATTACH_JSON', '1') == '1',
+                'patterns_only_on_failure': os.getenv('PATTERNS_ONLY_ON_FAILURE', '0') == '1',
             })
 
     return configs
@@ -280,7 +282,8 @@ def notify_pattern_scan_results(scan_results, signature):
         }
     ]
 
-    results_lines = []
+    all_lines = []
+    failing_lines = []
     for sig_name in sorted(all_signatures):
         win_result = windows_results.get(sig_name)
         lin_result = linux_results.get(sig_name)
@@ -294,34 +297,42 @@ def notify_pattern_scan_results(scan_results, signature):
         win_circle = get_circle(win_count, win_multi)
         lin_circle = get_circle(lin_count, lin_multi)
 
-        results_lines.append(
-            f"`{sig_name}` → Windows `[{win_count}]` {win_circle}, Linux `[{lin_count}]` {lin_circle}"
-        )
+        line = f"`{sig_name}` → Windows `[{win_count}]` {win_circle}, Linux `[{lin_count}]` {lin_circle}"
+        all_lines.append(line)
 
-    max_field_length = 1024
-    current_field = []
-    current_length = 0
+        win_failed = not is_success(win_result) if win_result else False
+        lin_failed = not is_success(lin_result) if lin_result else False
+        if win_failed or lin_failed:
+            failing_lines.append(line)
 
-    for line in results_lines:
-        line_length = len(line) + 1
-        if current_length + line_length > max_field_length:
-            fields.append({
-                "name": "Results" if len([f for f in fields if f['name'].startswith('Results')]) == 0 else "Results (cont.)",
+    def build_result_fields(lines, base_fields):
+        result_fields = list(base_fields)
+        max_field_length = 1024
+        current_field = []
+        current_length = 0
+
+        for line in lines:
+            line_length = len(line) + 1
+            if current_length + line_length > max_field_length:
+                result_fields.append({
+                    "name": "Results" if len([f for f in result_fields if f['name'].startswith('Results')]) == 0 else "Results (cont.)",
+                    "value": "\n".join(current_field),
+                    "inline": False
+                })
+                current_field = [line]
+                current_length = line_length
+            else:
+                current_field.append(line)
+                current_length += line_length
+
+        if current_field:
+            result_fields.append({
+                "name": "Results" if len([f for f in result_fields if f['name'].startswith('Results')]) == 0 else "Results (cont.)",
                 "value": "\n".join(current_field),
                 "inline": False
             })
-            current_field = [line]
-            current_length = line_length
-        else:
-            current_field.append(line)
-            current_length += line_length
 
-    if current_field:
-        fields.append({
-            "name": "Results" if len([f for f in fields if f['name'].startswith('Results')]) == 0 else "Results (cont.)",
-            "value": "\n".join(current_field),
-            "inline": False
-        })
+        return result_fields
 
     total_failed = windows_failed + linux_failed
     total_checks = len(windows_results) + len(linux_results)
@@ -346,11 +357,18 @@ def notify_pattern_scan_results(scan_results, signature):
     ]
 
     for webhook in webhooks:
+        if webhook.get('patterns_only_on_failure'):
+            if total_failed == 0:
+                continue
+            webhook_fields = build_result_fields(failing_lines, fields)
+        else:
+            webhook_fields = build_result_fields(all_lines, fields)
+
         send_discord_webhook(
             webhook_url=webhook['url'],
             title="Pattern Scan Results - Windows & Linux",
             description=f"Pattern scanning completed for both platforms",
-            fields=fields,
+            fields=webhook_fields,
             color=color,
             files=files_to_upload if webhook['attach_json'] else None
         )
