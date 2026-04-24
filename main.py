@@ -14,7 +14,7 @@ from pathlib import Path
 from os import makedirs
 from dotenv import load_dotenv
 from steamchecker import CheckGameUpdates, GetSignature
-from discord_notifier import notify_vfunc_results, notify_pattern_scan_results
+from discord_notifier import notify_vfunc_results, notify_pattern_scan_results, notify_offset_results
 
 sys.path.insert(0, str(Path(__file__).parent))
 from convert_kv_to_jsonc import convert as convert_gamedata
@@ -34,7 +34,7 @@ SKIP_VFUNC        = os.getenv('SKIP_VFUNC', '0') == '1'
 DATA_DIR         = Path('data')
 OUTPUT_DIR       = Path('output')
 CACHE_DIR        = Path('cache')
-PUBLIC_FILE      = Path('public730.txt')
+PUBLIC_FILE      = CACHE_DIR / 'public730.txt'
 
 GAMES_TXT_CACHE  = CACHE_DIR / 'kz_gamedata_cache.games.txt'
 SIGNATURES_JSONC = CACHE_DIR / 'kz_signatures.jsonc'
@@ -191,9 +191,9 @@ def pattern_scan(os_name: str, sig: str) -> list:
             else:
                 if sig_data.get('allow_multi_match'):
                     success += 1  # intentional multi-match, count as success
-                    print(f"  🔵 {sig_name} ({os_name}): {count} matches (allow_multi_match)")
+                    print(f"🔵 {sig_name} ({os_name}): {count} matches (allow_multi_match)")
                 else:
-                    print(f"  🟡 {sig_name} ({os_name}): {count} matches (ambiguous!)")
+                    print(f"🟡 {sig_name} ({os_name}): {count} matches (ambiguous!)")
         except Exception as e:
             print(f"{sig_name} ({os_name}): {e}")
             outputs.append({'signature': sig_name, 'va': 'error', 'count': 0})
@@ -254,7 +254,8 @@ def check_and_validate():
 
     if not SKIP_VFUNC and any(vfunc_results.values()):
         notify_vfunc_results(vfunc_results, sig)
-    notify_pattern_scan_results(scan_results, sig)
+    if any(scan_results.values()):
+        notify_pattern_scan_results(scan_results, sig)
 
     latest = OUTPUT_DIR / 'latest'
     if latest.exists():
@@ -281,6 +282,8 @@ if __name__ == '__main__':
     print(f"Poll interval : {POLL_INTERVAL}s")
     print(f"Gamedata URL  : {KZ_GAMEDATA_LOCAL or KZ_GAMEDATA_URL}")
     print(f"Skip vfunc    : {SKIP_VFUNC}")
+    from discord_notifier import WEBHOOK_CONFIGS
+    print(f"Webhooks      : {', '.join(w['name'] for w in WEBHOOK_CONFIGS) or 'none'}")
     print()
 
     while not shutdown:
