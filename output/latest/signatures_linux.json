@@ -1,17 +1,17 @@
 [
     {
         "signature": "CCSPlayerController_SwitchTeam",
-        "va": "server.0x13e4d90",
+        "va": "server.0x13de830",
         "count": 1
     },
     {
         "signature": "CBasePlayerController_SetPawn",
-        "va": "server.0x214fe30",
+        "va": "server.0x149b4a0",
         "count": 1
     },
     {
         "signature": "GetLegacyGameEventListener",
-        "va": "server.0x155af30",
+        "va": "server.0x1557ab0",
         "count": 1
     },
     {
@@ -21,213 +21,208 @@
     },
     {
         "signature": "SnapViewAngles",
-        "va": "server.0x16b3690",
+        "va": "server.0x16b0290",
         "count": 1
     },
     {
         "signature": "TracePlayerBBox",
-        "va": "server.0x13ecd40",
+        "va": "server.0x13e7900",
         "count": 1
     },
     {
         "signature": "TraceShape",
-        "va": "server.0x155d700",
+        "va": "server.0x155a280",
         "count": 1
     },
     {
         "signature": "CPhysicsGameSystemFrameBoundary",
-        "va": "server.0xde46c0",
+        "va": "server.0xdde380",
         "count": 1
     },
     {
         "signature": "DebugDrawMesh",
-        "va": "server.0x16e6c40",
+        "va": "server.0x16e3840",
         "count": 1
     },
     {
         "signature": "SetupMove",
-        "va": "server.0x1437740",
+        "va": "server.0x142f220",
         "count": 1
     },
     {
         "signature": "ProcessMovement",
-        "va": "server.0x1423ba0",
+        "va": "server.0x141a920",
         "count": 1
     },
     {
         "signature": "PlayerMove",
-        "va": "server.0x1423760",
+        "va": "server.0x141a4e0",
         "count": 1
     },
     {
         "signature": "CheckParameters",
-        "va": "server.0x14062a0",
+        "va": "server.0x13fc580",
         "count": 1
     },
     {
         "signature": "CanMove",
-        "va": "server.0x13f47c0",
+        "va": "server.0x13ef1f0",
         "count": 1
     },
     {
         "signature": "FullWalkMove",
-        "va": "server.0x1423460",
+        "va": "server.0x141a1e0",
         "count": 1
     },
     {
         "signature": "MoveInit",
-        "va": "server.0x14156e0",
+        "va": "server.0x140cab0",
         "count": 1
     },
     {
         "signature": "CheckWater",
-        "va": "server.0x13ec3a0",
+        "va": "server.0x13e6f60",
         "count": 1
     },
     {
         "signature": "WaterMove",
-        "va": "server.0x13fed70",
+        "va": "server.0x13f8300",
         "count": 1
     },
     {
         "signature": "CheckVelocity",
-        "va": "server.0x1420480",
+        "va": "server.0x1417200",
         "count": 1
     },
     {
         "signature": "Duck",
-        "va": "server.0x1413bb0",
+        "va": "server.0x140af80",
         "count": 1
     },
     {
         "signature": "CanUnduck",
-        "va": "server.0x13ee9b0",
+        "va": "server.0x13e9570",
         "count": 1
     },
     {
         "signature": "LadderMove",
-        "va": "server.0x140b050",
+        "va": "server.0x1404360",
         "count": 1
     },
     {
         "signature": "CheckJumpButtonLegacy",
-        "va": "server.0x1410630",
+        "va": "server.0x140a350",
         "count": 1
     },
     {
         "signature": "CheckJumpButtonModern",
-        "va": "server.0x1415120",
+        "va": "server.0x140c4f0",
         "count": 1
     },
     {
         "signature": "OnJumpLegacy",
-        "va": "server.0x140f8c0",
+        "va": "server.0x14095e0",
         "count": 1
     },
     {
         "signature": "OnJumpModern",
-        "va": "server.0x1412cb0",
+        "va": "server.0x140a6a0",
         "count": 1
     },
     {
         "signature": "AirMove",
-        "va": "server.0x1422fa0",
+        "va": "server.0x1419d20",
         "count": 1
     },
     {
         "signature": "AirAccelerate",
-        "va": "server.0x13efc00",
+        "va": "server.0x13ea7b0",
         "count": 1
     },
     {
         "signature": "Friction",
-        "va": "server.0x13f0430",
+        "va": "server.0x13eafe0",
         "count": 1
     },
     {
         "signature": "WalkMove",
-        "va": "server.0x1422030",
+        "va": "server.0x1418db0",
         "count": 1
     },
     {
         "signature": "TryPlayerMove",
-        "va": "server.0x13fcff0",
+        "va": "server.0x13f6580",
         "count": 1
     },
     {
         "signature": "CategorizePosition",
-        "va": "server.0x140e050",
+        "va": "server.0x1407d70",
         "count": 1
     },
     {
         "signature": "CheckFalling",
-        "va": "server.0x14135e0",
-        "count": 1
-    },
-    {
-        "signature": "PostPlayerMove",
-        "va": "server.0x1409ca0",
+        "va": "server.0x1406fc0",
         "count": 1
     },
     {
         "signature": "PostThink",
-        "va": "server.0xa64c60",
+        "va": "server.0xa608a0",
         "count": 1
     },
     {
         "signature": "EmitSound",
-        "va": "server.0x18ed840",
+        "va": "server.0x18ea4e0",
         "count": 1
     },
     {
         "signature": "ProcessUsercmds",
-        "va": "server.0x14b0740",
+        "va": "server.0x14ad2c0",
         "count": 1
     },
     {
         "signature": "PhysicsSimulate",
-        "va": "server.0x14b9c90",
+        "va": "server.0x14b6810",
         "count": 1
     },
     {
         "signature": "GameEventManager",
-        "va": "server.0x15ba3ea",
+        "va": "server.0x15b6f6a",
         "count": 1
     },
     {
         "signature": "CreateEntityByName",
-        "va": "server.0x1559140",
+        "va": "server.0x1555cc0",
         "count": 1
     },
     {
         "signature": "DispatchSpawn",
-        "va": "server.0x163f7d0",
+        "va": "server.0x163c400",
         "count": 1
     },
     {
         "signature": "RemoveEntity",
-        "va": "server.0x1559480",
+        "va": "server.0x1556000",
         "count": 1
     },
     {
         "signature": "CreateBot",
-        "va": "server.0xbda6c0",
+        "va": "server.0xbd4680",
         "count": 1
     },
     {
         "signature": "SetOrAddAttributeValueByName",
-        "va": "server.0x19f8440",
+        "va": "server.0x19f5100",
         "count": 1
     },
     {
         "signature": "SetModel",
-        "va": "server.0x148db90",
+        "va": "server.0x148a710",
         "count": 2,
         "allow_multi_match": true
     },
     {
         "signature": "DecalTrace",
-        "va": "server.0x16417c0",
+        "va": "server.0x163e3f0",
         "count": 1
     }
 ]

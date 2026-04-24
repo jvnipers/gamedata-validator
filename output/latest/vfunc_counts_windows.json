@@ -2,127 +2,127 @@
     {
         "class_name": "IGameSystem",
         "vfunc_count": 64,
-        "va": "server.0x181597fa8",
+        "va": "server.0x18159afa8",
         "binary": "server"
     },
     {
         "class_name": "CBaseEntity",
         "vfunc_count": 239,
-        "va": "server.0x181760768",
+        "va": "server.0x1817636e8",
         "binary": "server"
     },
     {
         "class_name": "CBasePlayerPawn",
         "vfunc_count": 403,
-        "va": "server.0x181761a78",
+        "va": "server.0x1817649f8",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayerPawn",
         "vfunc_count": 416,
-        "va": "server.0x1815a9a48",
+        "va": "server.0x1815aca38",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayerController",
         "vfunc_count": 276,
-        "va": "server.0x1817209f8",
+        "va": "server.0x181723830",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_WeaponServices",
         "vfunc_count": 39,
-        "va": "server.0x181729928",
+        "va": "server.0x18172c4a8",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_MovementServices",
         "vfunc_count": 55,
-        "va": "server.0x181724fe0",
+        "va": "server.0x181727c20",
         "binary": "server"
     },
     {
         "class_name": "CGameSceneNode",
         "vfunc_count": 28,
-        "va": "server.0x181745868",
+        "va": "server.0x1817487f8",
         "binary": "server"
     },
     {
         "class_name": "CCSGameRules",
         "vfunc_count": 130,
-        "va": "server.0x1816c3fc8",
+        "va": "server.0x1816c6e58",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_ItemServices",
         "vfunc_count": 25,
-        "va": "server.0x181721648",
+        "va": "server.0x181727ac0",
         "binary": "server"
     },
     {
         "class_name": "CSource2GameClients",
         "vfunc_count": 44,
-        "va": "server.0x18178df68",
+        "va": "server.0x181790d08",
         "binary": "server"
     },
     {
         "class_name": "CSource2GameEntities",
         "vfunc_count": 18,
-        "va": "server.0x18178c278",
+        "va": "server.0x18178f120",
         "binary": "server"
     },
     {
         "class_name": "CGameEventManager",
         "vfunc_count": 16,
-        "va": "server.0x1817494a0",
+        "va": "server.0x18174c430",
         "binary": "server"
     },
     {
         "class_name": "CLoopModeGame",
         "vfunc_count": 9,
-        "va": "server.0x18174eb90",
+        "va": "server.0x181751b20",
         "binary": "server"
     },
     {
         "class_name": "CGameEventListener",
         "vfunc_count": 2,
-        "va": "server.0x1815a8a68",
+        "va": "server.0x1815aba58",
         "binary": "server"
     },
     {
         "class_name": "CGameEntitySystem",
         "vfunc_count": 24,
-        "va": "server.0x181746010",
+        "va": "server.0x181748fa0",
         "binary": "server"
     },
     {
         "class_name": "CSource2Server",
         "vfunc_count": 98,
-        "va": "server.0x18178c3c8",
+        "va": "server.0x18178f668",
         "binary": "server"
     },
     {
         "class_name": "CLoadingSpawnGroup",
         "vfunc_count": 17,
-        "va": "server.0x181748928",
+        "va": "server.0x18174b8b8",
         "binary": "server"
     },
     {
         "class_name": "CTraceFilter",
         "vfunc_count": 2,
-        "va": "server.0x1815a7f98",
+        "va": "server.0x1815aaf88",
         "binary": "server"
     },
     {
         "class_name": "CRecipientFilter",
         "vfunc_count": 5,
-        "va": "server.0x1815a1750",
+        "va": "server.0x1815a4740",
         "binary": "server"
     },
     {
         "class_name": "CGameEvent",
         "vfunc_count": 34,
-        "va": "server.0x181749388",
+        "va": "server.0x18174c318",
         "binary": "server"
     },
     {

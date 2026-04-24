@@ -2,127 +2,127 @@
     {
         "class_name": "IGameSystem",
         "vfunc_count": 62,
-        "va": "server.0x228d440",
+        "va": "server.0x2289ec0",
         "binary": "server"
     },
     {
         "class_name": "CBaseEntity",
         "vfunc_count": 240,
-        "va": "server.0x2295d78",
+        "va": "server.0x22927f8",
         "binary": "server"
     },
     {
         "class_name": "CBasePlayerPawn",
         "vfunc_count": 404,
-        "va": "server.0x2299598",
+        "va": "server.0x2296018",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayerPawn",
         "vfunc_count": 418,
-        "va": "server.0x22444d8",
+        "va": "server.0x2240f58",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayerController",
         "vfunc_count": 278,
-        "va": "server.0x2345ed8",
+        "va": "server.0x23426a8",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_WeaponServices",
         "vfunc_count": 42,
-        "va": "server.0x23498f0",
+        "va": "server.0x23463e0",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_MovementServices",
         "vfunc_count": 56,
-        "va": "server.0x2347b10",
+        "va": "server.0x23445e0",
         "binary": "server"
     },
     {
         "class_name": "CGameSceneNode",
         "vfunc_count": 29,
-        "va": "server.0x235b3b8",
+        "va": "server.0x2357e98",
         "binary": "server"
     },
     {
         "class_name": "CCSGameRules",
         "vfunc_count": 131,
-        "va": "server.0x22fb240",
+        "va": "server.0x22f7c00",
         "binary": "server"
     },
     {
         "class_name": "CCSPlayer_ItemServices",
         "vfunc_count": 26,
-        "va": "server.0x2346af0",
+        "va": "server.0x2343b78",
         "binary": "server"
     },
     {
         "class_name": "CSource2GameClients",
         "vfunc_count": 44,
-        "va": "server.0x2385eb8",
+        "va": "server.0x2382968",
         "binary": "server"
     },
     {
         "class_name": "CSource2GameEntities",
         "vfunc_count": 21,
-        "va": "server.0x2385dd0",
+        "va": "server.0x2382880",
         "binary": "server"
     },
     {
         "class_name": "CGameEventManager",
         "vfunc_count": 17,
-        "va": "server.0x235a550",
+        "va": "server.0x2357030",
         "binary": "server"
     },
     {
         "class_name": "CLoopModeGame",
         "vfunc_count": 18,
-        "va": "server.0x235da88",
+        "va": "server.0x235a568",
         "binary": "server"
     },
     {
         "class_name": "CGameEventListener",
         "vfunc_count": 0,
-        "va": "server.0x223f978",
+        "va": "server.0x223c3f8",
         "binary": "server"
     },
     {
         "class_name": "CGameEntitySystem",
         "vfunc_count": 25,
-        "va": "server.0x23595d8",
+        "va": "server.0x23560b8",
         "binary": "server"
     },
     {
         "class_name": "CSource2Server",
         "vfunc_count": 99,
-        "va": "server.0x23859e8",
+        "va": "server.0x2382498",
         "binary": "server"
     },
     {
         "class_name": "CLoadingSpawnGroup",
         "vfunc_count": 17,
-        "va": "server.0x2359928",
+        "va": "server.0x2356408",
         "binary": "server"
     },
     {
         "class_name": "CTraceFilter",
         "vfunc_count": 3,
-        "va": "server.0x223f7f8",
+        "va": "server.0x223c278",
         "binary": "server"
     },
     {
         "class_name": "CRecipientFilter",
         "vfunc_count": 6,
-        "va": "server.0x2361350",
+        "va": "server.0x235de30",
         "binary": "server"
     },
     {
         "class_name": "CGameEvent",
         "vfunc_count": 35,
-        "va": "server.0x235a428",
+        "va": "server.0x2356f08",
         "binary": "server"
     },
     {
@@ -188,19 +188,19 @@
     {
         "class_name": "CSoundSystem",
         "vfunc_count": 134,
-        "va": "soundsystem.0x6c2948",
+        "va": "soundsystem.0x6c2a08",
         "binary": "soundsystem"
     },
     {
         "class_name": "CSoundOpSystem",
         "vfunc_count": 171,
-        "va": "soundsystem.0x6bfd48",
+        "va": "soundsystem.0x6bfe08",
         "binary": "soundsystem"
     },
     {
         "class_name": "CSoundEventManager",
         "vfunc_count": 63,
-        "va": "soundsystem.0x6bfb40",
+        "va": "soundsystem.0x6bfc00",
         "binary": "soundsystem"
     },
     {
