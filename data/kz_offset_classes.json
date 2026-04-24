@@ -1,0 +1,22 @@
+{
+    "QuietPlayerSlot":        { "class": "CSource2GameClients",  "lib": "server", "vfunc": false },
+    "GameEntitySystem":       { "class": "CGameEntitySystem",    "lib": "server", "vfunc": false },
+    "Teleport":               { "class": "CBaseEntity",          "lib": "server" },
+    "CollisionRulesChanged":  { "class": "CBaseEntity",          "lib": "server" },
+    "IsEntityPawn":           { "class": "CBaseEntity",          "lib": "server" },
+    "IsEntityController":     { "class": "CBaseEntity",          "lib": "server" },
+    "ControllerChangeTeam":   { "class": "CCSPlayerController",  "lib": "server" },
+    "CommitSuicide":          { "class": "CBasePlayerPawn",      "lib": "server" },
+    "ControllerRespawn":      { "class": "CCSPlayerController",  "lib": "server" },
+    "Respawn":                { "class": "CBasePlayerPawn",      "lib": "server" },
+    "ClientOffset":           { "class": "CSource2GameClients",  "lib": "server", "vfunc": false },
+    "StartTouch":             { "class": "CBaseEntity",          "lib": "server" },
+    "Touch":                  { "class": "CBaseEntity",          "lib": "server" },
+    "EndTouch":               { "class": "CBaseEntity",          "lib": "server" },
+    "PassesTriggerFilters":   { "class": "CBaseEntity",          "lib": "server", "vfunc": false },
+    "DebugTriangle":          { "class": "CBaseEntity",          "lib": "server" },
+    "GetDebugOverlay":        { "class": "CBaseEntity",          "lib": "server" },
+    "ClearOverlays":          { "class": "CBaseEntity",          "lib": "server" },
+    "PlayerRunCommand":       { "class": "CCSPlayer_MovementServices", "lib": "server" },
+    "FinishMove":             { "class": "CCSPlayer_MovementServices", "lib": "server" }
+}
