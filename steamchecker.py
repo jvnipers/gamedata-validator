@@ -6,6 +6,9 @@ No Steam login required. No gevent. No SteamClient.
 import time
 import hashlib
 import requests
+from pathlib import Path
+
+_CACHE_DIR = Path("cache")
 
 _build_id = ""
 _s = ""
@@ -71,7 +74,7 @@ def CheckGameUpdates(app_id: int) -> list | bool:
 
     update_signature = f"{_build_id}|{gid_win}|{gid_linux}|{kz_hash}"
 
-    public_file = f"public{app_id}.txt"
+    public_file = _CACHE_DIR / f"public{app_id}.txt"
     try:
         with open(public_file) as f:
             file_info = f.read()
