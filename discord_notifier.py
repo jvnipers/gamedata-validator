@@ -5,13 +5,61 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def send_discord_webhook(title, description, fields=None, color=None, files=None):
-    webhook_url = os.getenv('DISCORD_WEBHOOK')
 
-    if not webhook_url:
-        print("Warning: DISCORD_WEBHOOK environment variable not set")
-        return
+def load_webhook_configs():
+    """
+    Load webhook configurations from environment variables.
 
+    Multi-webhook format:
+        DISCORD_WEBHOOKS=name1,name2
+        NAME1_WEBHOOK_URL=https://...
+        NAME1_NOTIFY_VFUNC=1
+        NAME1_NOTIFY_PATTERNS=1
+        NAME1_ATTACH_JSON=1
+
+    Legacy single-webhook fallback (used when DISCORD_WEBHOOKS is not set):
+        DISCORD_WEBHOOK=https://...
+        NOTIFY_VFUNC=1  NOTIFY_PATTERNS=1  WEBHOOK_ATTACH_JSON=1
+    """
+    configs = []
+
+    webhook_names = os.getenv('DISCORD_WEBHOOKS', '').strip()
+
+    if webhook_names:
+        for name in webhook_names.split(','):
+            name = name.strip()
+            if not name:
+                continue
+            prefix = name.upper()
+            url = os.getenv(f'{prefix}_WEBHOOK_URL', '')
+            if not url:
+                print(f"Warning: {prefix}_WEBHOOK_URL not set, skipping webhook '{name}'")
+                continue
+            configs.append({
+                'name': name,
+                'url': url,
+                'notify_vfunc': os.getenv(f'{prefix}_NOTIFY_VFUNC', '1') == '1',
+                'notify_patterns': os.getenv(f'{prefix}_NOTIFY_PATTERNS', '1') == '1',
+                'attach_json': os.getenv(f'{prefix}_ATTACH_JSON', '1') == '1',
+            })
+    else:
+        url = os.getenv('DISCORD_WEBHOOK', '')
+        if url:
+            configs.append({
+                'name': 'default',
+                'url': url,
+                'notify_vfunc': os.getenv('NOTIFY_VFUNC', '1') == '1',
+                'notify_patterns': os.getenv('NOTIFY_PATTERNS', '1') == '1',
+                'attach_json': os.getenv('WEBHOOK_ATTACH_JSON', '1') == '1',
+            })
+
+    return configs
+
+
+WEBHOOK_CONFIGS = load_webhook_configs()
+
+
+def send_discord_webhook(webhook_url, title, description, fields=None, color=None, files=None):
     if color is None:
         color = 5814783
 
@@ -58,6 +106,10 @@ def send_discord_webhook(title, description, fields=None, color=None, files=None
 
 
 def notify_vfunc_results(vfunc_results, signature):
+    webhooks = [w for w in WEBHOOK_CONFIGS if w['notify_vfunc']]
+    if not webhooks:
+        return
+
     windows_results = {r['class_name']: r for r in vfunc_results.get('windows', [])}
     linux_results = {r['class_name']: r for r in vfunc_results.get('linux', [])}
 
@@ -164,16 +216,22 @@ def notify_vfunc_results(vfunc_results, signature):
         }
     ]
 
-    send_discord_webhook(
-        title="VFunc Offsets - Windows & Linux",
-        description=f"Virtual function offset analysis completed for both platforms",
-        fields=fields,
-        color=color,
-        files=files_to_upload
-    )
+    for webhook in webhooks:
+        send_discord_webhook(
+            webhook_url=webhook['url'],
+            title="VFunc Offsets - Windows & Linux",
+            description=f"Virtual function offset analysis completed for both platforms",
+            fields=fields,
+            color=color,
+            files=files_to_upload if webhook['attach_json'] else None
+        )
 
 
 def notify_pattern_scan_results(scan_results, signature):
+    webhooks = [w for w in WEBHOOK_CONFIGS if w['notify_patterns']]
+    if not webhooks:
+        return
+
     def get_circle(count, allow_multi_match=False):
         if count == 0:
             return "🔴"
@@ -287,10 +345,12 @@ def notify_pattern_scan_results(scan_results, signature):
         }
     ]
 
-    send_discord_webhook(
-        title="Pattern Scan Results - Windows & Linux",
-        description=f"Pattern scanning completed for both platforms",
-        fields=fields,
-        color=color,
-        files=files_to_upload
-    )
+    for webhook in webhooks:
+        send_discord_webhook(
+            webhook_url=webhook['url'],
+            title="Pattern Scan Results - Windows & Linux",
+            description=f"Pattern scanning completed for both platforms",
+            fields=fields,
+            color=color,
+            files=files_to_upload if webhook['attach_json'] else None
+        )
