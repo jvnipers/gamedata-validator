@@ -15,4 +15,10 @@ COPY . .
 # Ensure the Linux binaries are executable
 RUN chmod +x data/DepotDownloader lib/s2binlib.so
 
+# Make app dir writable for non-root users (workspace_*, output/, cache/)
+RUN chmod -R a+rwX /app
+
+# DepotDownloader (.NET) needs a writable HOME for IsolatedStorage
+ENV HOME=/tmp
+
 CMD ["python", "main.py"]
