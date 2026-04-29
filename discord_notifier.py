@@ -41,7 +41,7 @@ def load_webhook_configs():
                 'notify_vfunc': os.getenv(f'{prefix}_NOTIFY_VFUNC', '1') == '1',
                 'notify_patterns': os.getenv(f'{prefix}_NOTIFY_PATTERNS', '1') == '1',
                 'attach_json': os.getenv(f'{prefix}_ATTACH_JSON', '1') == '1',
-                'patterns_only_on_failure': os.getenv(f'{prefix}_PATTERNS_ONLY_ON_FAILURE', '0') == '1',
+                'patterns_only_on_failure': int(os.getenv(f'{prefix}_PATTERNS_ONLY_ON_FAILURE', '0')),
             })
     else:
         url = os.getenv('DISCORD_WEBHOOK', '')
@@ -52,7 +52,7 @@ def load_webhook_configs():
                 'notify_vfunc': os.getenv('NOTIFY_VFUNC', '1') == '1',
                 'notify_patterns': os.getenv('NOTIFY_PATTERNS', '1') == '1',
                 'attach_json': os.getenv('WEBHOOK_ATTACH_JSON', '1') == '1',
-                'patterns_only_on_failure': os.getenv('PATTERNS_ONLY_ON_FAILURE', '0') == '1',
+                'patterns_only_on_failure': int(os.getenv('PATTERNS_ONLY_ON_FAILURE', '0')),
             })
 
     return configs
@@ -357,10 +357,13 @@ def notify_pattern_scan_results(scan_results, signature):
     ]
 
     for webhook in webhooks:
-        if webhook.get('patterns_only_on_failure'):
+        mode = webhook.get('patterns_only_on_failure', 0)
+        if mode == 1:
             if total_failed == 0:
                 continue
             webhook_fields = build_result_fields(failing_lines, fields)
+        elif mode == 2:
+            webhook_fields = fields if total_failed == 0 else build_result_fields(failing_lines, fields)
         else:
             webhook_fields = build_result_fields(all_lines, fields)
 
