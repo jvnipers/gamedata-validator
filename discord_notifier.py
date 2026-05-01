@@ -61,18 +61,14 @@ def load_webhook_configs():
 WEBHOOK_CONFIGS = load_webhook_configs()
 
 
-def send_discord_webhook(webhook_url, title, description, fields=None, color=None, files=None):
+def send_discord_webhook(webhook_url, title, fields=None, color=None, files=None):
     if color is None:
         color = 5814783
 
     embed = {
         "title": title,
-        "description": description,
         "color": color,
         "timestamp": datetime.utcnow().isoformat(),
-        "footer": {
-            "text": "GameData Validator"
-        }
     }
 
     if fields:
@@ -222,7 +218,6 @@ def notify_vfunc_results(vfunc_results, signature):
         send_discord_webhook(
             webhook_url=webhook['url'],
             title="VFunc Offsets - Windows & Linux",
-            description=f"Virtual function offset analysis completed for both platforms",
             fields=fields,
             color=color,
             files=files_to_upload if webhook['attach_json'] else None
@@ -370,7 +365,6 @@ def notify_pattern_scan_results(scan_results, signature):
         send_discord_webhook(
             webhook_url=webhook['url'],
             title="Pattern Scan Results - Windows & Linux",
-            description=f"Pattern scanning completed for both platforms",
             fields=webhook_fields,
             color=color,
             files=files_to_upload if webhook['attach_json'] else None
