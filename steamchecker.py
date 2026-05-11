@@ -68,9 +68,11 @@ def CheckGameUpdates(app_id: int) -> list | bool:
 
     try:
         kz_hash = GetKZGamedataHash()
+        kz_hash_ok = True
     except Exception as e:
         print(f"Could not hash KZ gamedata: {e}")
         kz_hash = "unknown"
+        kz_hash_ok = False
 
     update_signature = f"{_build_id}|{gid_win}|{gid_linux}|{kz_hash}"
 
@@ -86,7 +88,7 @@ def CheckGameUpdates(app_id: int) -> list | bool:
         updated.append(_DEPOT_WIN)
     if gid_linux not in file_info:
         updated.append(_DEPOT_LINUX)
-    if update_signature not in file_info:
+    if kz_hash_ok and update_signature not in file_info:
         updated.append("cs2kz-gamedata")
 
     if updated:
