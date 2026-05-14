@@ -1,3 +1,5 @@
 commentjson
 python-dotenv
 requests
+steam[client]
+gevent-eventemitter

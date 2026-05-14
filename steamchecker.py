@@ -1,12 +1,14 @@
 """
-steamchecker.py — Drop-in replacement using the public SteamCMD HTTP API.
-No Steam login required. No gevent. No SteamClient.
+steamchecker.py - Queries Steam PICS directly via an anonymous SteamClient.
 """
 
 import time
 import hashlib
 import requests
 from pathlib import Path
+
+from steam.client import SteamClient
+from steam.enums import EResult
 
 _CACHE_DIR = Path("cache")
 
@@ -16,21 +18,28 @@ _s = ""
 _DEPOT_WIN   = "2347771"
 _DEPOT_LINUX = "2347773"
 
-_STEAMCMD_API = "https://api.steamcmd.net/v1/info/730"
-
 _KZ_GAMEDATA_URL = (
     "https://raw.githubusercontent.com/KZGlobalTeam/cs2kz-metamod"
     "/master/gamedata/cs2kz-core.games.txt"
 )
 
 
-def _fetch_steam_info() -> dict:
-    resp = requests.get(_STEAMCMD_API, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
-    if data.get("status") != "success":
-        raise RuntimeError(f"SteamCMD API returned non-success: {data.get('status')}")
-    return data["data"]["730"]
+def _fetch_steam_info(app_id: int) -> dict:
+    client = SteamClient()
+    try:
+        result = client.anonymous_login()
+        if result != EResult.OK:
+            raise RuntimeError(f"Anonymous Steam login failed: {result!r}")
+
+        info = client.get_product_info(apps=[app_id], timeout=30)
+        if not info or app_id not in info.get("apps", {}):
+            raise RuntimeError(f"PICS returned no info for app {app_id}")
+        return info["apps"][app_id]
+    finally:
+        try:
+            client.logout()
+        except Exception:
+            pass
 
 
 def _get_file_hash(url: str, algorithm: str = "sha256") -> str:
@@ -56,12 +65,12 @@ def CheckGameUpdates(app_id: int) -> list | bool:
     global _build_id
 
     try:
-        info = _fetch_steam_info()
+        app = _fetch_steam_info(app_id)
     except Exception as e:
-        print(f"SteamCMD API error: {e}")
+        print(f"Steam PICS error: {e}")
         return False
 
-    depots      = info["depots"]
+    depots      = app["depots"]
     _build_id   = str(depots["branches"]["public"]["buildid"])
     gid_win     = str(depots[_DEPOT_WIN]["manifests"]["public"]["gid"])
     gid_linux   = str(depots[_DEPOT_LINUX]["manifests"]["public"]["gid"])

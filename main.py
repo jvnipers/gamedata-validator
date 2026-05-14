@@ -214,6 +214,10 @@ def check_and_validate():
     gamedata_changed = kz_gamedata_fetch_and_check_changed()
     updated_depots = CheckGameUpdates(730)
 
+    if updated_depots is False and not gamedata_changed:
+        print("No updates detected (Steam API check failed, skipping).")
+        return
+
     if not updated_depots and not gamedata_changed:
         print("No updates detected.")
         return
