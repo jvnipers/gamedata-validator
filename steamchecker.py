@@ -28,7 +28,7 @@ _KZ_GAMEDATA_URL = (
 
 
 def _fetch_steam_info(app_id: int) -> dict:
-    last_exc: Exception | None = None
+    last_exc: BaseException | None = None
     for attempt in range(1, _PICS_RETRIES + 1):
         client = SteamClient()
         try:
@@ -40,16 +40,18 @@ def _fetch_steam_info(app_id: int) -> dict:
             if not info or app_id not in info.get("apps", {}):
                 raise RuntimeError(f"PICS returned no info for app {app_id}")
             return info["apps"][app_id]
-        except Exception as e:
+        except BaseException as e:
+            if isinstance(e, KeyboardInterrupt):
+                raise
             last_exc = e
             print(f"Steam PICS attempt {attempt}/{_PICS_RETRIES} failed: {e}")
             try:
                 client.logout()
-            except Exception:
+            except BaseException:
                 pass
             if attempt < _PICS_RETRIES:
                 time.sleep(_PICS_RETRY_DELAY)
-    raise RuntimeError(f"Steam PICS failed after {_PICS_RETRIES} attempts") from last_exc
+    raise RuntimeError(f"Steam PICS failed after {_PICS_RETRIES} attempts") from (last_exc if isinstance(last_exc, Exception) else Exception(str(last_exc)))
 
 
 def _get_file_hash(url: str, algorithm: str = "sha256") -> str:
