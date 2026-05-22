@@ -7,8 +7,11 @@ import hashlib
 import requests
 from pathlib import Path
 
+from gevent import Timeout as _GeventTimeout
+
 _PICS_RETRIES = 3
 _PICS_RETRY_DELAY = 5  # seconds between attempts
+_PICS_ATTEMPT_TIMEOUT = 60  # seconds before giving up on a hung login
 
 from steam.client import SteamClient
 from steam.enums import EResult
@@ -31,14 +34,15 @@ def _fetch_steam_info(app_id: int) -> dict:
     for attempt in range(1, _PICS_RETRIES + 1):
         client = SteamClient()
         try:
-            result = client.anonymous_login()
-            if result != EResult.OK:
-                raise RuntimeError(f"Anonymous Steam login failed: {result!r}")
+            with _GeventTimeout(_PICS_ATTEMPT_TIMEOUT, RuntimeError(f"Steam PICS timed out after {_PICS_ATTEMPT_TIMEOUT}s")):
+                result = client.anonymous_login()
+                if result != EResult.OK:
+                    raise RuntimeError(f"Anonymous Steam login failed: {result!r}")
 
-            info = client.get_product_info(apps=[app_id], timeout=30)
-            if not info or app_id not in info.get("apps", {}):
-                raise RuntimeError(f"PICS returned no info for app {app_id}")
-            return info["apps"][app_id]
+                info = client.get_product_info(apps=[app_id], timeout=30)
+                if not info or app_id not in info.get("apps", {}):
+                    raise RuntimeError(f"PICS returned no info for app {app_id}")
+                return info["apps"][app_id]
         except BaseException as e:
             if isinstance(e, KeyboardInterrupt):
                 raise
