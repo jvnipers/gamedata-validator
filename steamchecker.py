@@ -16,7 +16,6 @@ from steam.enums import EResult
 _CACHE_DIR = Path("cache")
 
 _build_id = ""
-_s = ""
 
 _DEPOT_WIN   = "2347771"
 _DEPOT_LINUX = "2347773"
@@ -123,10 +122,11 @@ def CheckGameUpdates(app_id: int) -> list | bool:
     return updated
 
 
+def GetBuildId() -> str:
+    """Return the current CS2 build ID (set after CheckGameUpdates)."""
+    return _build_id
+
+
 def GetSignature() -> str:
     """Return a unique run identifier: <build_id>_<unix_timestamp>."""
-    global _s
-    if _s:
-        return _s
-    _s = f"{_build_id}_{int(time.time())}"
-    return _s
+    return f"{_build_id}_{int(time.time())}"

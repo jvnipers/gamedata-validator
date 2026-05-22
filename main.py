@@ -13,7 +13,7 @@ import s2binlib
 from pathlib import Path
 from os import makedirs
 from dotenv import load_dotenv
-from steamchecker import CheckGameUpdates, GetSignature
+from steamchecker import CheckGameUpdates, GetBuildId, GetSignature
 from discord_notifier import notify_vfunc_results, notify_pattern_scan_results
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -231,19 +231,23 @@ def check_and_validate():
         print("KZ gamedata file updated.")
 
     sig       = GetSignature()
-    workspace = f"workspace_{sig}"
+    workspace = f"workspace_{GetBuildId()}"
 
     makedirs(OUTPUT_DIR / sig,        exist_ok=True)
     makedirs(f"{workspace}/binaries", exist_ok=True)
 
+    depots_list       = updated_depots if isinstance(updated_depots, list) else []
+    depot_ids_changed = [d for d in depots_list if d != 'cs2kz-gamedata']
+    gamedata_updated  = gamedata_changed or 'cs2kz-gamedata' in depots_list
+
     binaries_path = Path(workspace) / 'binaries' / 'game'
-    if updated_depots or not binaries_path.exists():
+    if depot_ids_changed or not binaries_path.exists():
         print("Downloading CS2 binaries...")
         download_depots(workspace)
     else:
         print("Reusing existing binaries (only gamedata changed).")
 
-    if gamedata_changed or not SIGNATURES_JSONC.exists():
+    if gamedata_updated or not SIGNATURES_JSONC.exists():
         if not prepare_signatures_jsonc():
             print("Conversion failed, aborting this run.")
             return
