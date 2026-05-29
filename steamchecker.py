@@ -48,12 +48,13 @@ def _fetch_steam_info(app_id: int) -> dict:
                 raise
             last_exc = e
             print(f"Steam PICS attempt {attempt}/{_PICS_RETRIES} failed: {e}")
+        finally:
             try:
-                client.logout()
+                client.disconnect()
             except BaseException:
                 pass
-            if attempt < _PICS_RETRIES:
-                time.sleep(_PICS_RETRY_DELAY)
+        if attempt < _PICS_RETRIES:
+            time.sleep(_PICS_RETRY_DELAY)
     raise RuntimeError(f"Steam PICS failed after {_PICS_RETRIES} attempts") from (last_exc if isinstance(last_exc, Exception) else Exception(str(last_exc)))
 
 
