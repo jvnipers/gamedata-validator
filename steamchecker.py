@@ -113,7 +113,7 @@ def CheckGameUpdates(app_id: int) -> list | bool:
         updated.append(_DEPOT_WIN)
     if gid_linux not in file_info:
         updated.append(_DEPOT_LINUX)
-    if kz_hash_ok and update_signature not in file_info:
+    if kz_hash_ok and kz_hash not in file_info:
         updated.append("cs2kz-gamedata")
 
     if updated:
