@@ -1,1 +1,1 @@
-regex:(.*)(?:client|host|matchmaking|server|animationsystem|engine2|materialsystem2|networksystem|resourcesystem|schemasystem|soundsystem|steamnetworkingsockets|tier0|vphysics2|vscript)
+regex:(.*)(?:client|host|matchmaking|server|animationsystem|engine2|materialsystem2|networksystem|resourcesystem|schemasystem|soundsystem|steamnetworkingsockets|steam_api64|tier0|vphysics2|vscript)
