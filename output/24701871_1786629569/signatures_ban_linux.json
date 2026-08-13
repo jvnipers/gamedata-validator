@@ -1,0 +1,12 @@
+[
+    {
+        "signature": "GameSystem_Think_CheckSteamBan",
+        "va": "server.0x137e720",
+        "count": 1
+    },
+    {
+        "signature": "CCSGameRules__sm_mapGcBanInformation",
+        "va": "server.0x14f7138",
+        "count": 1
+    }
+]

@@ -1,0 +1,223 @@
+[
+    {
+        "signature": "CCSPlayerController_SwitchTeam",
+        "va": "server.0x180a3e6f0",
+        "count": 1
+    },
+    {
+        "signature": "CBasePlayerController_SetPawn",
+        "va": "server.0x180b12a00",
+        "count": 1
+    },
+    {
+        "signature": "GetLegacyGameEventListener",
+        "va": "server.0x180b92b70",
+        "count": 1
+    },
+    {
+        "signature": "RecvServerBrowserPacket",
+        "va": "steamnetworkingsockets.0x180087be0",
+        "count": 1
+    },
+    {
+        "signature": "SnapViewAngles",
+        "va": "server.0x180c83310",
+        "count": 1
+    },
+    {
+        "signature": "TraceShape",
+        "va": "server.0x180bbda10",
+        "count": 1
+    },
+    {
+        "signature": "CPhysicsGameSystemFrameBoundary",
+        "va": "server.0x18055c990",
+        "count": 1
+    },
+    {
+        "signature": "DebugDrawMesh",
+        "va": "server.0x180ca9d50",
+        "count": 1
+    },
+    {
+        "signature": "SetupMove",
+        "va": "server.0x180a84320",
+        "count": 1
+    },
+    {
+        "signature": "ProcessMovement",
+        "va": "server.0x180a81830",
+        "count": 1
+    },
+    {
+        "signature": "PlayerMove",
+        "va": "server.0x180a7e160",
+        "count": 1
+    },
+    {
+        "signature": "CheckParameters",
+        "va": "server.0x180a5f700",
+        "count": 1
+    },
+    {
+        "signature": "CanMove",
+        "va": "server.0x180a5cd50",
+        "count": 1
+    },
+    {
+        "signature": "FullWalkMove",
+        "va": "server.0x180a7e9a0",
+        "count": 1
+    },
+    {
+        "signature": "MoveInit",
+        "va": "server.0x180a7ed70",
+        "count": 1
+    },
+    {
+        "signature": "CheckWater",
+        "va": "server.0x180a60af0",
+        "count": 1
+    },
+    {
+        "signature": "WaterMove",
+        "va": "server.0x180a8d2a0",
+        "count": 1
+    },
+    {
+        "signature": "CheckVelocity",
+        "va": "server.0x180a602e0",
+        "count": 1
+    },
+    {
+        "signature": "Duck",
+        "va": "server.0x180a645b0",
+        "count": 1
+    },
+    {
+        "signature": "CanUnduck",
+        "va": "server.0x180a5d220",
+        "count": 1
+    },
+    {
+        "signature": "LadderMove",
+        "va": "server.0x180a772f0",
+        "count": 1
+    },
+    {
+        "signature": "CheckJumpButtonLegacy",
+        "va": "server.0x180a5e3d0",
+        "count": 1
+    },
+    {
+        "signature": "CheckJumpButtonModern",
+        "va": "server.0x180a5e5b0",
+        "count": 1
+    },
+    {
+        "signature": "OnJumpLegacy",
+        "va": "server.0x180a5eb70",
+        "count": 1
+    },
+    {
+        "signature": "OnJumpModern",
+        "va": "server.0x180a88180",
+        "count": 1
+    },
+    {
+        "signature": "AirMove",
+        "va": "server.0x180a85570",
+        "count": 1
+    },
+    {
+        "signature": "AirAccelerate",
+        "va": "server.0x180a59d40",
+        "count": 1
+    },
+    {
+        "signature": "Friction",
+        "va": "server.0x180a67a20",
+        "count": 1
+    },
+    {
+        "signature": "WalkMove",
+        "va": "server.0x180a8c260",
+        "count": 1
+    },
+    {
+        "signature": "TryPlayerMove",
+        "va": "server.0x180a889a0",
+        "count": 1
+    },
+    {
+        "signature": "CategorizePosition",
+        "va": "server.0x180a5d8a0",
+        "count": 1
+    },
+    {
+        "signature": "CheckFalling",
+        "va": "server.0x180a5df30",
+        "count": 1
+    },
+    {
+        "signature": "PostThink",
+        "va": "server.0x1801e18a0",
+        "count": 1
+    },
+    {
+        "signature": "EmitSound",
+        "va": "server.0x180e3d300",
+        "count": 1
+    },
+    {
+        "signature": "ProcessUsercmds",
+        "va": "server.0x180b069d0",
+        "count": 1
+    },
+    {
+        "signature": "PhysicsSimulate",
+        "va": "server.0x180b04cf0",
+        "count": 1
+    },
+    {
+        "signature": "GameEventManager",
+        "va": "server.0x180bc52fe",
+        "count": 1
+    },
+    {
+        "signature": "CreateEntityByName",
+        "va": "server.0x180b7f9d0",
+        "count": 1
+    },
+    {
+        "signature": "DispatchSpawn",
+        "va": "server.0x180c2f580",
+        "count": 1
+    },
+    {
+        "signature": "RemoveEntity",
+        "va": "server.0x180bbef30",
+        "count": 1
+    },
+    {
+        "signature": "CreateBot",
+        "va": "server.0x180317760",
+        "count": 1
+    },
+    {
+        "signature": "SetOrAddAttributeValueByName",
+        "va": "server.0x180f2bd70",
+        "count": 1
+    },
+    {
+        "signature": "SetModel",
+        "va": "server.0x180b12300",
+        "count": 2,
+        "allow_multi_match": true
+    },
+    {
+        "signature": "DecalTrace",
+        "va": "server.0x180c40f30",
+        "count": 1
+    }
+]
