@@ -35,7 +35,6 @@ SKIP_VFUNC = os.getenv("SKIP_VFUNC", "0") == "1"
 DATA_DIR = Path("data")
 OUTPUT_DIR = Path("output")
 CACHE_DIR = Path("cache")
-PUBLIC_FILE = CACHE_DIR / "public730.txt"
 
 makedirs(CACHE_DIR, exist_ok=True)
 
@@ -205,7 +204,7 @@ def download_depots(workspace_name: str):
 
 def dump_vfunc_counts(os_name: str, workspace_name: str, sig: str) -> list:
     if SKIP_VFUNC:
-        print(f"Skipping vtable scan (SKIP_VFUNC=1)")
+        print("Skipping vtable scan (SKIP_VFUNC=1)")
         return []
 
     outputs = []

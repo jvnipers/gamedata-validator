@@ -1,8 +1,9 @@
 import os
 import re
 import json
+import time
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,6 +14,9 @@ MAX_EMBED_CHARS = 5800  # headroom under Discord's 6000 per-message budget
 MAX_EMBEDS_PER_MESSAGE = 10
 MAX_MESSAGE_CHARS = 6000
 MAX_FILES_PER_MESSAGE = 10
+
+POST_RETRIES = 3
+MAX_RETRY_WAIT = 60  # seconds, so a throttled webhook can't stall the poll loop
 
 DEFAULT_COLOR = 5814783
 COLOR_OK = 3066993
@@ -132,7 +136,7 @@ def _embed(title, fields, color):
     embed = {
         "title": title,
         "color": DEFAULT_COLOR if color is None else color,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     if fields:
         embed["fields"] = fields
@@ -174,30 +178,57 @@ def build_embeds(title, fields, color=None):
     return embeds
 
 
+def _retry_after(response):
+    """Seconds Discord wants us to wait, from the header or the JSON body."""
+    raw = response.headers.get("Retry-After")
+    if raw is None:
+        try:
+            raw = response.json().get("retry_after")
+        except Exception:
+            raw = None
+    if raw is None:
+        return 5.0
+    try:
+        return min(max(float(raw), 1.0), MAX_RETRY_WAIT)
+    except (TypeError, ValueError):
+        return 5.0
+
+
 def _post(webhook_url, payload, files=None):
     titles = ", ".join(e.get("title", "embed") for e in payload.get("embeds", []))
-    try:
-        if files:
-            files_to_upload = {}
-            for i, file_info in enumerate(files):
-                files_to_upload[f"file{i}"] = (
-                    file_info["filename"],
-                    file_info["content"],
-                    "application/json",
+
+    for attempt in range(1, POST_RETRIES + 1):
+        try:
+            if files:
+                files_to_upload = {}
+                for i, file_info in enumerate(files):
+                    files_to_upload[f"file{i}"] = (
+                        file_info["filename"],
+                        file_info["content"],
+                        "application/json",
+                    )
+
+                response = requests.post(
+                    webhook_url,
+                    data={"payload_json": json.dumps(payload)},
+                    files=files_to_upload,
                 )
+            else:
+                response = requests.post(webhook_url, json=payload)
 
-            response = requests.post(
-                webhook_url,
-                data={"payload_json": json.dumps(payload)},
-                files=files_to_upload,
-            )
-        else:
-            response = requests.post(webhook_url, json=payload)
+            # Several sources means several messages per run, so throttling is expected
+            if response.status_code == 429 and attempt < POST_RETRIES:
+                wait = _retry_after(response)
+                print(f"Discord rate limited, retrying in {wait:.1f}s: {titles}")
+                time.sleep(wait)
+                continue
 
-        response.raise_for_status()
-        print(f"Discord notification sent: {titles}")
-    except Exception as e:
-        print(f"Failed to send Discord notification: {e}")
+            response.raise_for_status()
+            print(f"Discord notification sent: {titles}")
+            return
+        except Exception as e:
+            print(f"Failed to send Discord notification: {e}")
+            return
 
 
 def send_discord_embeds(webhook_url, embeds, files=None):
@@ -246,7 +277,8 @@ def _status_color(failed, checks):
 
 
 def _file_slug(name):
-    return re.sub(r"[^A-Za-z0-9._-]", "_", name)
+    """Must match main._slugify so attachments and on-disk results share a name."""
+    return re.sub(r"[^a-z0-9._-]", "_", name.lower())
 
 
 def notify_vfunc_results(vfunc_results, signature):
