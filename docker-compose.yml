@@ -9,3 +9,4 @@ services:
     volumes:
       - ./output:/app/output
       - ./cache:/app/cache
+      - ./gamedata:/app/gamedata:ro

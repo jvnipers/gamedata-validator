@@ -3,8 +3,6 @@ steamchecker.py - Queries Steam PICS directly via an anonymous SteamClient.
 """
 
 import time
-import hashlib
-import requests
 from pathlib import Path
 
 from gevent import Timeout as _GeventTimeout
@@ -20,13 +18,8 @@ _CACHE_DIR = Path("cache")
 
 _build_id = ""
 
-_DEPOT_WIN   = "2347771"
+_DEPOT_WIN = "2347771"
 _DEPOT_LINUX = "2347773"
-
-_KZ_GAMEDATA_URL = (
-    "https://raw.githubusercontent.com/KZGlobalTeam/cs2kz-metamod"
-    "/master/gamedata/cs2kz-core.games.txt"
-)
 
 
 def _fetch_steam_info(app_id: int) -> dict:
@@ -34,7 +27,10 @@ def _fetch_steam_info(app_id: int) -> dict:
     for attempt in range(1, _PICS_RETRIES + 1):
         client = SteamClient()
         try:
-            with _GeventTimeout(_PICS_ATTEMPT_TIMEOUT, RuntimeError(f"Steam PICS timed out after {_PICS_ATTEMPT_TIMEOUT}s")):
+            with _GeventTimeout(
+                _PICS_ATTEMPT_TIMEOUT,
+                RuntimeError(f"Steam PICS timed out after {_PICS_ATTEMPT_TIMEOUT}s"),
+            ):
                 result = client.anonymous_login()
                 if result != EResult.OK:
                     raise RuntimeError(f"Anonymous Steam login failed: {result!r}")
@@ -55,28 +51,16 @@ def _fetch_steam_info(app_id: int) -> dict:
                 pass
         if attempt < _PICS_RETRIES:
             time.sleep(_PICS_RETRY_DELAY)
-    raise RuntimeError(f"Steam PICS failed after {_PICS_RETRIES} attempts") from (last_exc if isinstance(last_exc, Exception) else Exception(str(last_exc)))
-
-
-def _get_file_hash(url: str, algorithm: str = "sha256") -> str:
-    h = hashlib.new(algorithm)
-    resp = requests.get(url, stream=True, timeout=30)
-    resp.raise_for_status()
-    for chunk in resp.iter_content(chunk_size=8192):
-        if chunk:
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def GetKZGamedataHash() -> str:
-    """SHA-256 of the live cs2kz-core.games.txt on GitHub."""
-    return _get_file_hash(_KZ_GAMEDATA_URL)
+    raise RuntimeError(f"Steam PICS failed after {_PICS_RETRIES} attempts") from (
+        last_exc if isinstance(last_exc, Exception) else Exception(str(last_exc))
+    )
 
 
 def CheckGameUpdates(app_id: int) -> list | bool:
     """
-    Check whether CS2 depots or the KZ gamedata have changed since the last run.
-    Returns a list of changed item names, [] if nothing changed, or False on error.
+    Check whether the CS2 depots changed since the last run.
+    Returns a list of changed depot ids, [] if nothing changed, or False on error.
+    Gamedata files are tracked separately, per source, in main.py.
     """
     global _build_id
 
@@ -86,20 +70,12 @@ def CheckGameUpdates(app_id: int) -> list | bool:
         print(f"Steam PICS error: {e}")
         return False
 
-    depots      = app["depots"]
-    _build_id   = str(depots["branches"]["public"]["buildid"])
-    gid_win     = str(depots[_DEPOT_WIN]["manifests"]["public"]["gid"])
-    gid_linux   = str(depots[_DEPOT_LINUX]["manifests"]["public"]["gid"])
+    depots = app["depots"]
+    _build_id = str(depots["branches"]["public"]["buildid"])
+    gid_win = str(depots[_DEPOT_WIN]["manifests"]["public"]["gid"])
+    gid_linux = str(depots[_DEPOT_LINUX]["manifests"]["public"]["gid"])
 
-    try:
-        kz_hash = GetKZGamedataHash()
-        kz_hash_ok = True
-    except Exception as e:
-        print(f"Could not hash KZ gamedata: {e}")
-        kz_hash = "unknown"
-        kz_hash_ok = False
-
-    update_signature = f"{_build_id}|{gid_win}|{gid_linux}|{kz_hash}"
+    update_signature = f"{_build_id}|{gid_win}|{gid_linux}"
 
     public_file = _CACHE_DIR / f"public{app_id}.txt"
     try:
@@ -109,12 +85,10 @@ def CheckGameUpdates(app_id: int) -> list | bool:
         file_info = ""
 
     updated = []
-    if gid_win   not in file_info:
+    if gid_win not in file_info:
         updated.append(_DEPOT_WIN)
     if gid_linux not in file_info:
         updated.append(_DEPOT_LINUX)
-    if kz_hash_ok and kz_hash not in file_info:
-        updated.append("cs2kz-gamedata")
 
     if updated:
         try:
