@@ -108,7 +108,7 @@ def build_line_fields(lines, base_name="Results"):
     def flush(buffer):
         fields.append(
             {
-                "name": base_name if not fields else f"\u200B",
+                "name": base_name if not fields else f"\u200b",
                 "value": "\n".join(buffer)[:MAX_FIELD_CHARS],
                 "inline": False,
             }

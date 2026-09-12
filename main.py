@@ -55,8 +55,8 @@ def load_gamedata_sources() -> list:
 
     _LOCAL wins over _URL for the same source.
 
-    Legacy fallback when GAMEDATA_SOURCES is unset: a single source named "kz"
-    built from KZ_GAMEDATA_URL / KZ_GAMEDATA_LOCAL.
+    Legacy fallback when GAMEDATA_SOURCES is unset:
+    a single source named "kz" built from KZ_GAMEDATA_URL / KZ_GAMEDATA_LOCAL.
     """
     names = [n.strip() for n in os.getenv("GAMEDATA_SOURCES", "").split(",")]
     names = [n for n in names if n]
@@ -128,8 +128,7 @@ def fetch_gamedata(source: dict) -> str:
 def gamedata_fetch_and_check_changed(source: dict) -> bool:
     """
     Fetches one source's gamedata, writes it to its .games.txt cache, and returns True if it changed since the last run.
-    Always writes the cache on success
-    so that prepare_signatures_jsonc() always has a file to read.
+    Always writes the cache on success so that prepare_signatures_jsonc() always has a file to read.
     Returns False on fetch error (non-fatal).
     """
     name = source["name"]
