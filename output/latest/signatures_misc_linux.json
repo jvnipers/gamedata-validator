@@ -1,42 +1,42 @@
 [
     {
         "signature": "SetBeamOrigin",
-        "va": "server.0x17e45c0",
+        "va": "server.0x1818a40",
         "count": 1
     },
     {
         "signature": "SetBeamEndPos",
-        "va": "server.0x17f8bf0",
+        "va": "server.0x182c8f0",
         "count": 1
     },
     {
         "signature": "GameSystemFactory",
-        "va": "server.0xeec966",
+        "va": "server.0xf022a6",
         "count": 1
     },
     {
         "signature": "GameEventManager",
-        "va": "server.0x1708fea",
+        "va": "server.0x173cb6a",
         "count": 1
     },
     {
         "signature": "Cleaner",
-        "va": "tier0.0x20b2a0",
+        "va": "tier0.0x20b420",
         "count": 1
     },
     {
         "signature": "HostStateRequest",
-        "va": "engine2.0x372cc0",
+        "va": "engine2.0x3750c0",
         "count": 1
     },
     {
         "signature": "ReplyConnection",
-        "va": "engine2.0x4f3fa0",
+        "va": "engine2.0x4f7920",
         "count": 1
     },
     {
         "signature": "ScriptGetAddon",
-        "va": "server.0xba7370",
+        "va": "server.0xbbd1b0",
         "count": 1
     }
 ]
