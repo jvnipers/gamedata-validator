@@ -352,14 +352,12 @@ def check_and_validate():
     else:
         print("Reusing existing binaries (only gamedata changed).")
 
+    # Always reconvert
     ready = []
     for source in sources_to_scan:
-        if changed[source["name"]] or not source["signatures"].exists():
-            if not prepare_signatures_jsonc(source):
-                print(f"[{source['name']}] Conversion failed, skipping this source.")
-                continue
-        else:
-            print(f"[{source['name']}] Reusing existing {source['signatures'].name}.")
+        if not prepare_signatures_jsonc(source):
+            print(f"[{source['name']}] Conversion failed, skipping this source.")
+            continue
         ready.append(source)
 
     if not ready:
