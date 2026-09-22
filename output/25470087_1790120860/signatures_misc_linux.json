@@ -1,0 +1,72 @@
+[
+    {
+        "signature": "SetBeamOrigin",
+        "va": "server.0x186bca0",
+        "count": 1
+    },
+    {
+        "signature": "SetBeamEndPos",
+        "va": "server.0x18822f0",
+        "count": 1
+    },
+    {
+        "signature": "GameSystemFactory",
+        "va": "server.0xf08fe6",
+        "count": 1
+    },
+    {
+        "signature": "GameEventManager",
+        "va": "server.0x17767ea",
+        "count": 1
+    },
+    {
+        "signature": "Cleaner",
+        "va": "tier0.0x20c8e0",
+        "count": 1
+    },
+    {
+        "signature": "HostStateRequest",
+        "va": "engine2.0x37dba0",
+        "count": 1
+    },
+    {
+        "signature": "ReplyConnection",
+        "va": "engine2.0x5046d0",
+        "count": 1
+    },
+    {
+        "signature": "ScriptGetAddon",
+        "va": "server.0xbb5fb0",
+        "count": 1
+    },
+    {
+        "signature": "CreateEntityByName",
+        "va": "server.0x171d040",
+        "count": 1
+    },
+    {
+        "signature": "DispatchSpawn",
+        "va": "server.0x1801ec0",
+        "count": 1
+    },
+    {
+        "signature": "RemoveEntity",
+        "va": "server.0x171d360",
+        "count": 1
+    },
+    {
+        "signature": "CCSCustomHudLayout_SetHasClass",
+        "va": "server.0x0",
+        "count": 0
+    },
+    {
+        "signature": "CCSCustomHudLayout_SetDialogVariableString",
+        "va": "server.0x132cde0",
+        "count": 1
+    },
+    {
+        "signature": "CCSCustomHudLayout_SetInputCaptureEnabled",
+        "va": "server.0x0",
+        "count": 0
+    }
+]
