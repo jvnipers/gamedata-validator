@@ -14,7 +14,12 @@ import s2binlib
 from pathlib import Path
 from os import makedirs
 from dotenv import load_dotenv
-from steamchecker import CheckGameUpdates, GetBuildId, GetSignature
+from steamchecker import (
+    CheckGameUpdates,
+    GetBuildId,
+    GetSignature,
+    MarkGameUpdatesSeen,
+)
 from discord_notifier import notify_vfunc_results, notify_pattern_scan_results
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -194,11 +199,16 @@ def download_depot(depot_id: int, workspace_name: str):
     print(stdout.decode())
     if stderr:
         print(f"  Depot {depot_id} stderr:\n{stderr.decode()}")
+    if proc.returncode != 0:
+        print(f"Depot {depot_id} download failed (exit code {proc.returncode})")
+        return False
+    return True
 
 
-def download_depots(workspace_name: str):
-    download_depot(2347771, workspace_name)
-    download_depot(2347773, workspace_name)
+def download_depots(workspace_name: str) -> bool:
+    return download_depot(2347771, workspace_name) and download_depot(
+        2347773, workspace_name
+    )
 
 
 def dump_vfunc_counts(os_name: str, workspace_name: str, sig: str) -> list:
@@ -348,7 +358,11 @@ def check_and_validate():
 
     if binaries_stale:
         print("Downloading CS2 binaries...")
-        download_depots(workspace)
+        if not download_depots(workspace):
+            # Scanning partial binaries reports every signature as broken
+            print(f"Download incomplete, retrying in {POLL_INTERVAL}s.")
+            return
+        MarkGameUpdatesSeen(730)
     else:
         print("Reusing existing binaries (only gamedata changed).")
 

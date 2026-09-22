@@ -17,6 +17,7 @@ from steam.enums import EResult
 _CACHE_DIR = Path("cache")
 
 _build_id = ""
+_pending_signature = ""
 
 _DEPOT_WIN = "2347771"
 _DEPOT_LINUX = "2347773"
@@ -62,7 +63,7 @@ def CheckGameUpdates(app_id: int) -> list | bool:
     Returns a list of changed depot ids, [] if nothing changed, or False on error.
     Gamedata files are tracked separately, per source, in main.py.
     """
-    global _build_id
+    global _build_id, _pending_signature
 
     try:
         app = _fetch_steam_info(app_id)
@@ -90,15 +91,25 @@ def CheckGameUpdates(app_id: int) -> list | bool:
     if gid_linux not in file_info:
         updated.append(_DEPOT_LINUX)
 
-    if updated:
-        try:
-            with open(public_file, "a") as f:
-                f.write(f"\n{update_signature}")
-        except Exception as e:
-            print(f"Could not write {public_file}: {e}")
-            return []
-
+    _pending_signature = update_signature if updated else ""
     return updated
+
+
+def MarkGameUpdatesSeen(app_id: int):
+    """
+    Persist the depot gids from the last CheckGameUpdates. Call only after the
+    depots downloaded, so a failed download is re-detected on the next poll.
+    """
+    global _pending_signature
+    if not _pending_signature:
+        return
+    public_file = _CACHE_DIR / f"public{app_id}.txt"
+    try:
+        with open(public_file, "a") as f:
+            f.write(f"\n{_pending_signature}")
+        _pending_signature = ""
+    except Exception as e:
+        print(f"Could not write {public_file}: {e}")
 
 
 def GetBuildId() -> str:
