@@ -1,0 +1,18 @@
+"Games"
+{
+	"csgo"
+	{
+		"Signatures"
+		{
+		}
+		"Offsets"
+		{
+			// From mm-cs2menus
+			"CCSCustomHudLayoutState::NetworkStateChanged"
+			{
+				"windows"		"1"
+				"linux"			"1"
+			}
+		}
+	}
+}
