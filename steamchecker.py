@@ -2,6 +2,7 @@
 steamchecker.py - Queries Steam PICS directly via an anonymous SteamClient.
 """
 
+import os
 import time
 from pathlib import Path
 
@@ -10,6 +11,9 @@ from gevent import Timeout as _GeventTimeout
 _PICS_RETRIES = 3
 _PICS_RETRY_DELAY = 5  # seconds between attempts
 _PICS_ATTEMPT_TIMEOUT = 60  # seconds before giving up on a hung login
+
+# steam's _pb2 files predate protoc 3.19; protobuf >= 4 only loads them in pure-Python mode
+os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
 
 from steam.client import SteamClient
 from steam.enums import EResult
